@@ -1,19 +1,37 @@
 import React, { useState } from "react";
+import {
+  User,
+  Mail,
+  Phone,
+  MapPin,
+  Briefcase,
+  GraduationCap,
+  PawPrint,
+  DollarSign,
+  Calendar,
+} from "lucide-react";
 
 const ProfilePage = () => {
   const [ownerPhoto, setOwnerPhoto] = useState(null);
   const [petPhoto, setPetPhoto] = useState(null);
 
   const [formData, setFormData] = useState({
-    fullName: "",
+    username: "",
     email: "",
+    fullName: "",
     phone: "",
+    age: "",
+    gender: "",
+    dob: "",
     street: "",
     city: "",
     state: "",
     country: "",
+    pincode: "",
     jobRole: "",
     company: "",
+    experience: "",
+    expectedSalary: "",
     degree: "",
     university: "",
     petName: "",
@@ -42,79 +60,106 @@ const ProfilePage = () => {
   const progress = (filledFields / totalFields) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-50 to-purple-50 py-10 px-4">
-      <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-xl p-8">
+    <div className="min-h-screen bg-gradient-to-r from-blue-100 to-purple-100 py-10 px-4">
+      <div className="max-w-4xl mx-auto bg-white shadow-2xl rounded-2xl p-8">
 
-        <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">
-          Pet Owner Profile
+        <h2 className="text-3xl font-bold text-center text-purple-700 mb-6">
+          🐾 Pet Owner Profile
         </h2>
 
         {/* Progress Bar */}
         <div className="mb-8">
-          <div className="flex justify-between mb-1 text-sm">
+          <div className="flex justify-between text-sm mb-1">
             <span>Profile Completion</span>
             <span>{Math.round(progress)}%</span>
           </div>
           <div className="w-full bg-gray-200 h-3 rounded-full">
             <div
-              className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-500"
+              className="bg-gradient-to-r from-purple-500 to-blue-500 h-3 rounded-full transition-all duration-500"
               style={{ width: `${progress}%` }}
-            ></div>
+            />
           </div>
         </div>
 
+        {/* ACCOUNT INFO */}
+        <Card title="Account Information">
+          <Input icon={<User size={16} />} label="Username" name="username" onChange={handleChange} />
+          <Input icon={<Mail size={16} />} label="Email ID" name="email" type="email" onChange={handleChange} />
+        </Card>
+
         {/* OWNER PHOTO */}
-        <Section title="Owner Profile Photo">
-          <UploadImage
-            image={ownerPhoto}
-            setImage={setOwnerPhoto}
-            label="Upload Owner Photo"
-          />
-        </Section>
+        <Card title="Owner Profile Photo">
+          <UploadImage image={ownerPhoto} setImage={setOwnerPhoto} />
+        </Card>
 
         {/* PERSONAL DETAILS */}
-        <Section title="Personal Details">
-          <Input label="Full Name" name="fullName" onChange={handleChange} />
-          <Input label="Email" name="email" onChange={handleChange} />
-          <Input label="Mobile Number" name="phone" onChange={handleChange} />
-        </Section>
+        <Card title="Personal Details">
+          <Input icon={<User size={16} />} label="Full Name" name="fullName" onChange={handleChange} />
+          <Input icon={<Phone size={16} />} label="Phone Number" name="phone" type="tel" onChange={handleChange} />
+          <Input icon={<Calendar size={16} />} label="Age" name="age" type="number" onChange={handleChange} />
+
+          <div>
+            <label className="block text-sm mb-1 text-gray-600">Gender</label>
+            <select
+              name="gender"
+              onChange={handleChange}
+              className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-purple-400 outline-none"
+            >
+              <option value="">Select Gender</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm mb-1 text-gray-600">
+              Date of Birth
+            </label>
+            <input
+              type="date"
+              name="dob"
+              onChange={handleChange}
+              className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-purple-400 outline-none"
+            />
+          </div>
+        </Card>
 
         {/* ADDRESS DETAILS */}
-        <Section title="Address Details">
-          <Input label="Street Address" name="street" onChange={handleChange} />
-          <Input label="City" name="city" onChange={handleChange} />
-          <Input label="State" name="state" onChange={handleChange} />
-          <Input label="Country" name="country" onChange={handleChange} />
-        </Section>
+        <Card title="Address Details">
+          <Input icon={<MapPin size={16} />} label="Street Address" name="street" onChange={handleChange} />
+          <Input icon={<MapPin size={16} />} label="City" name="city" onChange={handleChange} />
+          <Input icon={<MapPin size={16} />} label="State" name="state" onChange={handleChange} />
+          <Input icon={<MapPin size={16} />} label="Country" name="country" onChange={handleChange} />
+          <Input icon={<MapPin size={16} />} label="Pincode" name="pincode" type="number" onChange={handleChange} />
+        </Card>
 
-        {/* WORK DETAILS */}
-        <Section title="Work Experience">
-          <Input label="Job Role" name="jobRole" onChange={handleChange} />
-          <Input label="Company Name" name="company" onChange={handleChange} />
-        </Section>
+        {/* WORK EXPERIENCE */}
+        <Card title="Work Experience">
+          <Input icon={<Briefcase size={16} />} label="Job Role" name="jobRole" onChange={handleChange} />
+          <Input icon={<Briefcase size={16} />} label="Company Name" name="company" onChange={handleChange} />
+          <Input icon={<Briefcase size={16} />} label="Years of Experience" name="experience" type="number" onChange={handleChange} />
+          <Input icon={<DollarSign size={16} />} label="Expected Salary" name="expectedSalary" type="number" onChange={handleChange} />
+        </Card>
 
-        {/* EDUCATION DETAILS */}
-        <Section title="Education">
-          <Input label="Degree" name="degree" onChange={handleChange} />
-          <Input label="University" name="university" onChange={handleChange} />
-        </Section>
+        {/* EDUCATION */}
+        <Card title="Education">
+          <Input icon={<GraduationCap size={16} />} label="Degree" name="degree" onChange={handleChange} />
+          <Input icon={<GraduationCap size={16} />} label="University" name="university" onChange={handleChange} />
+        </Card>
 
         {/* PET PROFILE */}
-        <Section title="Pet Profile 🐶">
-          <UploadImage
-            image={petPhoto}
-            setImage={setPetPhoto}
-            label="Upload Pet Photo"
-          />
-          <Input label="Pet Name" name="petName" onChange={handleChange} />
-          <Input label="Pet Type (Dog/Cat)" name="petType" onChange={handleChange} />
-          <Input label="Breed" name="petBreed" onChange={handleChange} />
-          <Input label="Pet Age" name="petAge" onChange={handleChange} />
-        </Section>
+        <Card title="Pet Profile 🐶">
+          <UploadImage image={petPhoto} setImage={setPetPhoto} />
+          <Input icon={<PawPrint size={16} />} label="Pet Name" name="petName" onChange={handleChange} />
+          <Input icon={<PawPrint size={16} />} label="Pet Type (Dog/Cat)" name="petType" onChange={handleChange} />
+          <Input icon={<PawPrint size={16} />} label="Breed" name="petBreed" onChange={handleChange} />
+          <Input icon={<Calendar size={16} />} label="Pet Age" name="petAge" type="number" onChange={handleChange} />
+        </Card>
 
         {/* ID PROOF */}
         <div className="mb-6">
-          <h3 className="font-semibold mb-2 text-gray-700">
+          <h3 className="font-semibold mb-2 text-purple-600">
             ID Proof Upload
           </h3>
           <input
@@ -130,18 +175,25 @@ const ProfilePage = () => {
           )}
         </div>
 
-        <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">
-          Save Profile
-        </button>
+        {/* BUTTONS */}
+        <div className="flex gap-4 mt-6">
+          <button className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition">
+            Save Profile
+          </button>
+          <button className="w-full bg-gray-300 py-3 rounded-lg hover:bg-gray-400 transition">
+            Cancel
+          </button>
+        </div>
+
       </div>
     </div>
   );
 };
 
-/* SECTION COMPONENT */
-const Section = ({ title, children }) => (
-  <div className="mb-8 border rounded-lg p-6 bg-gray-50">
-    <h3 className="text-lg font-semibold mb-4 text-purple-600">
+/* CARD COMPONENT */
+const Card = ({ title, children }) => (
+  <div className="mb-8 bg-gray-50 p-6 rounded-xl border shadow-sm">
+    <h3 className="text-lg font-semibold text-purple-600 mb-4">
       {title}
     </h3>
     <div className="grid md:grid-cols-2 gap-4">
@@ -151,36 +203,39 @@ const Section = ({ title, children }) => (
 );
 
 /* INPUT COMPONENT */
-const Input = ({ label, name, onChange }) => (
+const Input = ({ icon, label, name, onChange, type = "text" }) => (
   <div>
     <label className="block text-sm mb-1 text-gray-600">
       {label}
     </label>
-    <input
-      type="text"
-      name={name}
-      onChange={onChange}
-      className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
-    />
+    <div className="flex items-center border rounded-lg px-3 focus-within:ring-2 focus-within:ring-purple-400">
+      {icon && <span className="text-gray-400 mr-2">{icon}</span>}
+      <input
+        type={type}
+        name={name}
+        onChange={onChange}
+        className="w-full p-2 outline-none"
+      />
+    </div>
   </div>
 );
 
-/* IMAGE UPLOAD COMPONENT */
-const UploadImage = ({ image, setImage, label }) => (
-  <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 p-6 rounded-lg">
+/* IMAGE UPLOAD */
+const UploadImage = ({ image, setImage }) => (
+  <div className="flex flex-col items-center justify-center border-2 border-dashed border-purple-300 p-4 rounded-xl w-full">
     {image ? (
       <img
         src={URL.createObjectURL(image)}
         alt="preview"
-        className="w-24 h-24 object-cover rounded-full mb-3"
+        className="w-20 h-20 object-cover rounded-full mb-2 border-2 border-purple-400"
       />
     ) : (
-      <div className="w-24 h-24 bg-gray-200 rounded-full mb-3 flex items-center justify-center text-gray-400">
+      <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center text-purple-400 text-sm mb-2">
         Photo
       </div>
     )}
-    <label className="cursor-pointer text-blue-600">
-      {label}
+    <label className="text-sm text-purple-600 cursor-pointer">
+      Upload
       <input
         type="file"
         hidden
