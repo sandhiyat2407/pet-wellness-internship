@@ -4,16 +4,15 @@ import {
   Mail,
   Phone,
   MapPin,
-  Briefcase,
-  GraduationCap,
   PawPrint,
-  DollarSign,
   Calendar,
+  CreditCard,
 } from "lucide-react";
 
 const ProfilePage = () => {
   const [ownerPhoto, setOwnerPhoto] = useState(null);
   const [petPhoto, setPetPhoto] = useState(null);
+  const [isSaved, setIsSaved] = useState(false);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -28,17 +27,13 @@ const ProfilePage = () => {
     state: "",
     country: "",
     pincode: "",
-    jobRole: "",
-    company: "",
-    experience: "",
-    expectedSalary: "",
-    degree: "",
-    university: "",
+    idProofNumber: "",
+    numberOfPets: "",
     petName: "",
     petType: "",
     petBreed: "",
     petAge: "",
-    idProof: null,
+    idProofFile: null,
   });
 
   const handleChange = (e) => {
@@ -49,6 +44,14 @@ const ProfilePage = () => {
     } else {
       setFormData({ ...formData, [name]: value });
     }
+  };
+
+  const handleSave = () => {
+    setIsSaved(true);
+  };
+
+  const handleEdit = () => {
+    setIsSaved(false);
   };
 
   const filledFields =
@@ -67,6 +70,13 @@ const ProfilePage = () => {
           🐾 Pet Owner Profile
         </h2>
 
+        {/* SAVE STATUS BAR */}
+        {isSaved && (
+          <div className="bg-green-100 text-green-700 p-3 rounded-lg text-center mb-6 font-medium">
+            Profile Saved Successfully ✅
+          </div>
+        )}
+
         {/* Progress Bar */}
         <div className="mb-8">
           <div className="flex justify-between text-sm mb-1">
@@ -83,27 +93,28 @@ const ProfilePage = () => {
 
         {/* ACCOUNT INFO */}
         <Card title="Account Information">
-          <Input icon={<User size={16} />} label="Username" name="username" onChange={handleChange} />
-          <Input icon={<Mail size={16} />} label="Email ID" name="email" type="email" onChange={handleChange} />
+          <Input icon={<User size={16} />} label="Username" name="username" onChange={handleChange} disabled={isSaved}/>
+          <Input icon={<Mail size={16} />} label="Email ID" name="email" type="email" onChange={handleChange} disabled={isSaved}/>
         </Card>
 
         {/* OWNER PHOTO */}
         <Card title="Owner Profile Photo">
-          <UploadImage image={ownerPhoto} setImage={setOwnerPhoto} />
+          <UploadImage image={ownerPhoto} setImage={setOwnerPhoto} disabled={isSaved}/>
         </Card>
 
         {/* PERSONAL DETAILS */}
         <Card title="Personal Details">
-          <Input icon={<User size={16} />} label="Full Name" name="fullName" onChange={handleChange} />
-          <Input icon={<Phone size={16} />} label="Phone Number" name="phone" type="tel" onChange={handleChange} />
-          <Input icon={<Calendar size={16} />} label="Age" name="age" type="number" onChange={handleChange} />
-
+          <Input icon={<User size={16} />} label="Full Name" name="fullName" onChange={handleChange} disabled={isSaved}/>
+          <Input icon={<Phone size={16} />} label="Phone Number" name="phone" type="tel" onChange={handleChange} disabled={isSaved}/>
+          <Input icon={<Calendar size={16} />} label="Age" name="age" type="number" onChange={handleChange} disabled={isSaved}/>
+          
           <div>
             <label className="block text-sm mb-1 text-gray-600">Gender</label>
             <select
               name="gender"
               onChange={handleChange}
-              className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-purple-400 outline-none"
+              disabled={isSaved}
+              className="w-full border p-3 rounded-lg"
             >
               <option value="">Select Gender</option>
               <option>Male</option>
@@ -113,76 +124,73 @@ const ProfilePage = () => {
           </div>
 
           <div>
-            <label className="block text-sm mb-1 text-gray-600">
-              Date of Birth
-            </label>
+            <label className="block text-sm mb-1 text-gray-600">Date of Birth</label>
             <input
               type="date"
               name="dob"
               onChange={handleChange}
-              className="w-full border p-3 rounded-lg focus:ring-2 focus:ring-purple-400 outline-none"
+              disabled={isSaved}
+              className="w-full border p-3 rounded-lg"
             />
           </div>
         </Card>
 
         {/* ADDRESS DETAILS */}
         <Card title="Address Details">
-          <Input icon={<MapPin size={16} />} label="Street Address" name="street" onChange={handleChange} />
-          <Input icon={<MapPin size={16} />} label="City" name="city" onChange={handleChange} />
-          <Input icon={<MapPin size={16} />} label="State" name="state" onChange={handleChange} />
-          <Input icon={<MapPin size={16} />} label="Country" name="country" onChange={handleChange} />
-          <Input icon={<MapPin size={16} />} label="Pincode" name="pincode" type="number" onChange={handleChange} />
+          <Input icon={<MapPin size={16} />} label="Street" name="street" onChange={handleChange} disabled={isSaved}/>
+          <Input icon={<MapPin size={16} />} label="City" name="city" onChange={handleChange} disabled={isSaved}/>
+          <Input icon={<MapPin size={16} />} label="State" name="state" onChange={handleChange} disabled={isSaved}/>
+          <Input icon={<MapPin size={16} />} label="Country" name="country" onChange={handleChange} disabled={isSaved}/>
+          <Input icon={<MapPin size={16} />} label="Pincode" name="pincode" type="number" onChange={handleChange} disabled={isSaved}/>
         </Card>
 
-        {/* WORK EXPERIENCE */}
-        <Card title="Work Experience">
-          <Input icon={<Briefcase size={16} />} label="Job Role" name="jobRole" onChange={handleChange} />
-          <Input icon={<Briefcase size={16} />} label="Company Name" name="company" onChange={handleChange} />
-          <Input icon={<Briefcase size={16} />} label="Years of Experience" name="experience" type="number" onChange={handleChange} />
-          <Input icon={<DollarSign size={16} />} label="Expected Salary" name="expectedSalary" type="number" onChange={handleChange} />
-        </Card>
-
-        {/* EDUCATION */}
-        <Card title="Education">
-          <Input icon={<GraduationCap size={16} />} label="Degree" name="degree" onChange={handleChange} />
-          <Input icon={<GraduationCap size={16} />} label="University" name="university" onChange={handleChange} />
-        </Card>
-
-        {/* PET PROFILE */}
-        <Card title="Pet Profile 🐶">
-          <UploadImage image={petPhoto} setImage={setPetPhoto} />
-          <Input icon={<PawPrint size={16} />} label="Pet Name" name="petName" onChange={handleChange} />
-          <Input icon={<PawPrint size={16} />} label="Pet Type (Dog/Cat)" name="petType" onChange={handleChange} />
-          <Input icon={<PawPrint size={16} />} label="Breed" name="petBreed" onChange={handleChange} />
-          <Input icon={<Calendar size={16} />} label="Pet Age" name="petAge" type="number" onChange={handleChange} />
+        {/* PET DETAILS */}
+        <Card title="Pet Details 🐶">
+          <UploadImage image={petPhoto} setImage={setPetPhoto} disabled={isSaved}/>
+          <Input icon={<PawPrint size={16} />} label="Number of Pets" name="numberOfPets" type="number" onChange={handleChange} disabled={isSaved}/>
+          <Input icon={<PawPrint size={16} />} label="Pet Name" name="petName" onChange={handleChange} disabled={isSaved}/>
+          <Input icon={<PawPrint size={16} />} label="Pet Type" name="petType" onChange={handleChange} disabled={isSaved}/>
+          <Input icon={<PawPrint size={16} />} label="Breed" name="petBreed" onChange={handleChange} disabled={isSaved}/>
+          <Input icon={<Calendar size={16} />} label="Pet Age" name="petAge" type="number" onChange={handleChange} disabled={isSaved}/>
         </Card>
 
         {/* ID PROOF */}
-        <div className="mb-6">
-          <h3 className="font-semibold mb-2 text-purple-600">
-            ID Proof Upload
-          </h3>
-          <input
-            type="file"
-            name="idProof"
-            className="border p-3 w-full rounded-lg"
-            onChange={handleChange}
-          />
-          {formData.idProof && (
-            <p className="text-green-600 mt-2">
-              Uploaded: {formData.idProof.name}
-            </p>
-          )}
-        </div>
+        <Card title="ID Proof">
+          <Input icon={<CreditCard size={16} />} label="ID Proof Number" name="idProofNumber" onChange={handleChange} disabled={isSaved}/>
+          <div>
+            <label className="block text-sm mb-1 text-gray-600">Upload ID Proof</label>
+            <input
+              type="file"
+              name="idProofFile"
+              onChange={handleChange}
+              disabled={isSaved}
+              className="border p-3 w-full rounded-lg"
+            />
+            {formData.idProofFile && (
+              <p className="text-green-600 mt-2">
+                Uploaded: {formData.idProofFile.name}
+              </p>
+            )}
+          </div>
+        </Card>
 
-        {/* BUTTONS */}
+        {/* SAVE / EDIT BUTTONS */}
         <div className="flex gap-4 mt-6">
-          <button className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition">
-            Save Profile
-          </button>
-          <button className="w-full bg-gray-300 py-3 rounded-lg hover:bg-gray-400 transition">
-            Cancel
-          </button>
+          {!isSaved ? (
+            <button
+              onClick={handleSave}
+              className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition"
+            >
+              Save Profile
+            </button>
+          ) : (
+            <button
+              onClick={handleEdit}
+              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
+            >
+              Edit Profile
+            </button>
+          )}
         </div>
 
       </div>
@@ -190,39 +198,34 @@ const ProfilePage = () => {
   );
 };
 
-/* CARD COMPONENT */
+/* CARD */
 const Card = ({ title, children }) => (
   <div className="mb-8 bg-gray-50 p-6 rounded-xl border shadow-sm">
-    <h3 className="text-lg font-semibold text-purple-600 mb-4">
-      {title}
-    </h3>
-    <div className="grid md:grid-cols-2 gap-4">
-      {children}
-    </div>
+    <h3 className="text-lg font-semibold text-purple-600 mb-4">{title}</h3>
+    <div className="grid md:grid-cols-2 gap-4">{children}</div>
   </div>
 );
 
-/* INPUT COMPONENT */
-const Input = ({ icon, label, name, onChange, type = "text" }) => (
+/* INPUT */
+const Input = ({ icon, label, name, onChange, type = "text", disabled }) => (
   <div>
-    <label className="block text-sm mb-1 text-gray-600">
-      {label}
-    </label>
-    <div className="flex items-center border rounded-lg px-3 focus-within:ring-2 focus-within:ring-purple-400">
+    <label className="block text-sm mb-1 text-gray-600">{label}</label>
+    <div className="flex items-center border rounded-lg px-3">
       {icon && <span className="text-gray-400 mr-2">{icon}</span>}
       <input
         type={type}
         name={name}
         onChange={onChange}
-        className="w-full p-2 outline-none"
+        disabled={disabled}
+        className="w-full p-2 outline-none bg-transparent"
       />
     </div>
   </div>
 );
 
 /* IMAGE UPLOAD */
-const UploadImage = ({ image, setImage }) => (
-  <div className="flex flex-col items-center justify-center border-2 border-dashed border-purple-300 p-4 rounded-xl w-full">
+const UploadImage = ({ image, setImage, disabled }) => (
+  <div className="flex flex-col items-center border-2 border-dashed border-purple-300 p-4 rounded-xl w-full">
     {image ? (
       <img
         src={URL.createObjectURL(image)}
@@ -234,14 +237,16 @@ const UploadImage = ({ image, setImage }) => (
         Photo
       </div>
     )}
-    <label className="text-sm text-purple-600 cursor-pointer">
-      Upload
-      <input
-        type="file"
-        hidden
-        onChange={(e) => setImage(e.target.files[0])}
-      />
-    </label>
+    {!disabled && (
+      <label className="text-sm text-purple-600 cursor-pointer">
+        Upload
+        <input
+          type="file"
+          hidden
+          onChange={(e) => setImage(e.target.files[0])}
+        />
+      </label>
+    )}
   </div>
 );
 
